@@ -10,3 +10,7 @@ cell index_to_cell(int index) {
 	c.col = index % 9;
 	return c;
 }
+
+bool is_index_valid(int index) {
+	return index >= 0 && index <= 80;
+}
