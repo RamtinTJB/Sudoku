@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <stack>
 
 #include "utils.h"
 
@@ -13,15 +14,22 @@ struct cell {
 
 class board {
 	private:
-		int* grid_ = new int[81];
+		int* grid_;
+		std::stack<int> move_index_history_;
+
 		std::vector<int> get_row(int row_num) const;
 		std::vector<int> get_col(int col_num) const;
 		std::vector<int> get_box(int box_num) const;
 	public:
+		board();
+
 		bool is_valid();
 		void put_num(const cell& c, int num);
-		std::vector<int> get_all_empty_cells();
+		void undo_last_move();
+		std::vector<cell> get_all_empty_cells();
 		bool is_board_full();
+
+		void print_board();
 };
 
 

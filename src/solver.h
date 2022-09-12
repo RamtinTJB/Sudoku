@@ -5,4 +5,6 @@
 
 #include "board.h"
 
+bool solve(board& brd);
+
 #endif

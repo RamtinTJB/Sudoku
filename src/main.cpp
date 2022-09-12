@@ -1,7 +1,12 @@
 #include <iostream>
 
+#include "solver.h"
+
 int main(int argc, const char** argv) {
-	std::cout << "Sudoku Solver" << std::endl;
+	board brd;
+	solve(brd);
+
+	brd.print_board();
 
 	return 0;
 }
