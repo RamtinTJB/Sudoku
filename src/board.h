@@ -7,6 +7,12 @@
 
 #include "utils.h"
 
+enum class CellStyle {
+	REGULAR,
+	GREEN,
+	RED
+};
+
 struct cell {
 	int row;
 	int col;
@@ -15,6 +21,7 @@ struct cell {
 class board {
 	private:
 		int* grid_;
+		CellStyle* styles_;
 		std::stack<int> move_index_history_;
 
 		std::vector<int> get_row(int row_num) const;
@@ -28,6 +35,10 @@ class board {
 		void undo_last_move();
 		std::vector<cell> get_all_empty_cells();
 		bool is_board_full();
+		int get_num(const cell&) const;
+
+		CellStyle get_style(const cell& c) const;
+		void set_style(const cell&, const CellStyle&);
 
 		void print_board();
 };
