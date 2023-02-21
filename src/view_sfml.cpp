@@ -42,8 +42,8 @@ sf::Text view_sfml::make_text(int row, int col, const std::string& str, const sf
 sf::Color view_sfml::get_cell_color(const CellStyle& style) {
 	switch (style) {
 		case CellStyle::REGULAR: return OUTLINE_COLOR;
-		case CellStyle::GREEN: return sf::Color::Green;
-		case CellStyle::RED: return sf::Color::Red;
+		case CellStyle::GREEN: return sf::Color(25, 166, 102);
+		case CellStyle::RED: return sf::Color(209, 56, 25);
 	}
 }
 
