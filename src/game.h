@@ -1,7 +1,7 @@
 #ifndef SUDOKU_SOLVER_GAME_H_
 #define SUDOKU_SOLVER_GAME_H_
 
-
+#include <SFML/Graphics.hpp>
 #include <thread>
 #include <chrono>
 
