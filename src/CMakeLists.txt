@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.12)
 project(Sudoku VERSION 1.0 LANGUAGES CXX)
 
 add_executable(${PROJECT_NAME} main.cpp
-	board.cpp utils.cpp solver.cpp view_sfml.cpp)
+	board.cpp utils.cpp solver.cpp view_sfml.cpp game.cpp)
 
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 
