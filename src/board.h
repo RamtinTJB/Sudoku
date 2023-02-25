@@ -20,8 +20,8 @@ struct cell {
 
 class board {
 	private:
-		int* grid_;
-		CellStyle* styles_;
+		int* grid_ = nullptr;
+		CellStyle* styles_ = nullptr;
 		std::stack<int> move_index_history_;
 
 		std::vector<int> get_row(int row_num) const;

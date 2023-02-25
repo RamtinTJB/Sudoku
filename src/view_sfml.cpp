@@ -10,13 +10,17 @@ void view_sfml::setup() {
 	}
 }
 
-sf::RectangleShape view_sfml::make_rect(int row, int col, const sf::Color& color) const {
+sf::RectangleShape view_sfml::make_rect(int row, int col, const sf::Color& color, int outline_thickness,
+        bool transparent) const {
 	sf::RectangleShape rect(
 			sf::Vector2f(square_width_, square_width_)
 			);
 	rect.setPosition(col*square_width_ + margin_, row*square_width_ + margin_);
 	rect.setFillColor(BACKGROUND_COLOR);
-	rect.setOutlineThickness(BORDER_WIDTH);	
+    if (transparent) {
+        rect.setFillColor(TRANSPARENT_COLOR);
+    }
+	rect.setOutlineThickness(outline_thickness);	
 	rect.setOutlineColor(color);
 
 	return rect;
@@ -79,6 +83,12 @@ void view_sfml::draw_board(const board& brd) {
 	}
 	draw_box_lines();
 	_render_texture.display();
+}
+
+void view_sfml::highlight_cell(const cell& c) {
+    auto rect = make_rect(c.row, c.col, sf::Color::Cyan, BORDER_WIDTH*2, true); 
+    _render_texture.draw(rect);
+    _render_texture.display();
 }
 
 void view_sfml::teardown() {

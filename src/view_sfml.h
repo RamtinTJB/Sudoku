@@ -11,6 +11,7 @@ constexpr int ROW_COUNT = 9;
 constexpr int COL_COUNT = 9;
 
 const sf::Color BACKGROUND_COLOR = sf::Color::White;
+const sf::Color TRANSPARENT_COLOR = sf::Color(0,0,0,0);
 const sf::Color OUTLINE_COLOR = sf::Color::Black;
 
 const float BORDER_WIDTH = 3.f;
@@ -27,6 +28,7 @@ class view_sfml {
 		}
 
 		void draw_board(const board& brd);
+        void highlight_cell(const cell& c);
 
 		void teardown();
 
@@ -46,7 +48,8 @@ class view_sfml {
 
 		void setup();
 
-		sf::RectangleShape make_rect(int row, int col, const sf::Color&) const;
+		sf::RectangleShape make_rect(int row, int col, const sf::Color&, int outline_thickness=BORDER_WIDTH,
+                bool transparent=false) const;
 		sf::Text make_text(int row, int col, const std::string& str, const sf::Color&) const;
 
 		sf::Color get_cell_color(const CellStyle&);
