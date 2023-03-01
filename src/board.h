@@ -32,6 +32,7 @@ class board {
 
 		bool is_valid();
 		void put_num(const cell& c, int num);
+        void clear_cell(const cell&);
 		void undo_last_move();
 		std::vector<cell> get_all_empty_cells();
 		bool is_board_full();

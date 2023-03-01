@@ -27,6 +27,13 @@ bool board::is_valid() {
 	return true;
 }
 
+void board::clear_cell(const cell& c) {
+    int index = cell_to_index(c);
+    if (is_index_valid(index)) {
+        grid_[index] = 0;
+    }
+}
+
 void board::put_num(const cell& c, int num) {
 	int index = cell_to_index(c);
 	if (is_index_valid(index)) {

@@ -85,6 +85,9 @@ void game::loop() {
                     case sf::Keyboard::Down: increment_selected_cell(9); break;
                     case sf::Keyboard::Left: decrement_selected_cell(); break;
                     case sf::Keyboard::Right: increment_selected_cell(); break;
+                    case sf::Keyboard::Backspace:
+                        brd_.clear_cell(index_to_cell(selected_cell_));
+                        break;
                     case sf::Keyboard::Enter:
                         status_ = Status::SOLVE;
                         solve(brd_, [this]() { this->update_ui(true); });
