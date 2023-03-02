@@ -51,3 +51,9 @@ cd build
 It's important to run the program from inside of the `build/src/` directory because the `arial.ttf` font has to be in the current working directory.
 
 ## License
+
+<img align="right" src="https://opensource.org/trademarks/opensource/OSI-Approved-License-100x137.png">
+
+The project is licensed under the [MIT License](https://opensource.org/licenses/MIT):
+
+Copyright &copy; 2023 Ramtin Tajbakhsh
