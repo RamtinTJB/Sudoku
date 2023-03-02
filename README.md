@@ -1,4 +1,4 @@
-# Sudoku
+# Graphical Sudoku Solver
 A very simple graphical sudoku solver written in C++. For the graphical representation of the Sudoku I used the `SFML 2.5.1` library.
 
 ## Backtracking Algorithm
@@ -35,5 +35,19 @@ bool solve(board& brd) {
 ```
 
 ## Build and Run
+
+This program uses the **CMake** build system so it's easy to build and run it. Its only dependency is `SFML 2.5+`. You can follow the instructions on their official [website](https://www.sfml-dev.org/tutorials/2.5/) to install the library.
+
+```sh
+git clone https://github.com/RamtinTJB/Sudoku
+cd Sudoku
+cmake -B build
+cd build
+make
+cd build
+./Sudoku
+```
+
+It's important to run the program from inside of the `build/src/` directory because the `arial.ttf` font has to be in the current working directory.
 
 ## License
