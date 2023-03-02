@@ -5,7 +5,8 @@
 void view_sfml::setup() {
 	square_width_ = width_ / ROW_COUNT;
 
-	if (!font_.loadFromFile("/Users/ramtintajbakhsh/Desktop/projects/Sudoku/assets/Arial Unicode.ttf")) {
+	/* if (!font_.loadFromFile("/Users/ramtintajbakhsh/Desktop/projects/Sudoku/assets/Arial Unicode.ttf")) { */
+    if (!font_.loadFromFile("arial.ttf")) {
 		std::cout << "Error" << std::endl;
 	}
 }
