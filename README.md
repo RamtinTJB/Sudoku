@@ -14,11 +14,14 @@ The implementation of the actual backtracking algorithm is remarkably simple onc
 bool solve(board& brd) {
     std::vector<cell> empty_cells = brd.get_all_empty_cells();
 
+    // No empty cells means the Sudoku has been solved
     if (empty_cells.empty())
         return true;
 
     cell unassigned = empty_cells[0];
 
+    // Recursively try every possible number in the first
+    // empty cell until the board is full
     for (int i = 0; i <= 9; i++) {
         brd.put_num(unassigned, i);
         if (brd.is_valid()) {
