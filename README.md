@@ -26,7 +26,7 @@ bool solve(board& brd) {
 
     // Recursively try every possible number in the first
     // empty cell until the board is full
-    for (int i = 0; i <= 9; i++) {
+    for (int i = 1; i <= 9; ++i) {
         brd.put_num(unassigned, i);
         if (brd.is_valid()) {
             if (solve(brd)) {
