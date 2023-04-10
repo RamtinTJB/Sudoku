@@ -28,6 +28,11 @@ class board {
 		std::vector<int> get_col(int col_num) const;
 		std::vector<int> get_box(int box_num) const;
 	public:
+        using const_iterator = int const*;
+
+        const_iterator begin() const { return grid_; }
+        const_iterator end() const { return grid_ + 81; }
+
 		board();
 
 		bool is_valid();
@@ -43,6 +48,17 @@ class board {
 
 		void print_board();
 };
+
+inline std::ostream& operator<<(std::ostream& os, const board& brd) {
+    int counter = 0;
+    for (auto it = brd.begin(); it != brd.end(); it++) {
+        std::cout << *it << " "; 
+        ++counter;
+        if (counter % 9 == 0) std::cout << std::endl;
+    }    
+
+    return os;
+}
 
 
 #endif
