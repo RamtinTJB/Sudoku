@@ -16,7 +16,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
 )
 
-set_project_warnings(${CMAKE_PROJECT_NAME})
+set_project_warnings(${PROJECT_NAME})
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets/arial.ttf
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

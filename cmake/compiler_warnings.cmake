@@ -26,12 +26,12 @@ function(set_project_warnings project_name)
 
     if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
         set(PROJECT_WARNINGS ${CLANG_WARNINGS})
+        message("Set Clang compiler warnings")
     elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
         set(PROJECT_WARNINGS ${GCC_WARNINGS})
+        message("Set GNU compiler warnings")
     endif()
-
+        
     target_compile_options(${project_name} INTERFACE ${PROJECT_WARNINGS})
-
-    message("Set compiler warnings successfully")
 
 endfunction()
