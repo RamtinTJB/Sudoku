@@ -6,10 +6,16 @@ add_executable(${PROJECT_NAME} main.cpp
 	board.cpp utils.cpp solver.cpp view_sfml.cpp game.cpp options.cpp)
 
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
+find_package(OpenCV REQUIRED)
 
 if (SFML_FOUND)
-	include_directories(${SFML_INCLUDE_DIR})
+    target_include_directories(${PROJECT_NAME} PUBLIC ${SFML_INCLUDE_DIR})
 	target_link_libraries(${PROJECT_NAME} sfml-network sfml-audio sfml-graphics sfml-window sfml-system)
+endif()
+
+if (OpenCV_FOUND)
+    target_include_directories(${PROJECT_NAME} PUBLIC ${OPENCV_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
 endif()
 
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC
