@@ -57,6 +57,23 @@ cd build
 
 It's important to run the program from inside of the `build/src/` directory because the `arial.ttf` font has to be in the current working directory.
 
+If run without any commmand line arguments, it will open a blank Sudoku. You can have it read the Sudoku from a file using `-f`
+
+```sh
+> cat puzzle.sdk
+0 8 0 5 3 0 2 7 6
+0 5 0 6 0 0 0 0 0
+6 1 3 0 0 0 0 0 0
+0 0 6 0 5 0 0 0 0
+0 3 2 0 0 0 7 0 1
+7 4 5 0 0 8 6 9 3
+0 7 0 9 6 0 5 0 0
+4 0 0 1 8 0 0 6 7
+5 0 0 0 0 4 8 2 9
+
+> ./Sudoku -f puzzle.sdk
+```
+
 ## License
 
 <img align="right" src="https://opensource.org/trademarks/opensource/OSI-Approved-License-100x137.png">
