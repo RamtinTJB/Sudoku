@@ -16,9 +16,10 @@ int main(int argc, const char** argv) {
         return -1;
     }
 
-    std::cout << opt << std::endl;
-
     game g(1000, 1000);
+    if (!opt.empty_board) {
+        g.load_from_file(opt.file_path);
+    }
     g.loop();
 
     return 0;

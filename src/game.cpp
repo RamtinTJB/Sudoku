@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "game.h"
 
 game::game(int width, int height) {
@@ -11,6 +13,14 @@ game::game(int width, int height) {
     ui_board_ = new view_sfml(width_, height_);
 
     ui_board_->set_margin(BOARD_MARGIN);
+}
+
+void game::load_from_file(const std::string& file_path) {
+    std::ifstream file(file_path, std::ios_base::in);
+    if (file.is_open()) {
+        file >> brd_;
+    }
+    file.close();
 }
 
 void game::increment_selected_cell(int count) {

@@ -2,10 +2,12 @@
 #define SUDOKU_SOLVER_BOARD_H
 
 #include <iostream>
+#include <string>
 #include <vector>
 #include <stack>
 
 #include "utils.h"
+#include "string_utils.h"
 
 enum class CellStyle {
 	REGULAR,
@@ -20,7 +22,7 @@ struct cell {
 
 class board {
 	private:
-		int* grid_ = nullptr;
+		int* grid_ = new int[81];
 		CellStyle* styles_ = nullptr;
 		std::stack<int> move_index_history_;
 
@@ -58,6 +60,24 @@ inline std::ostream& operator<<(std::ostream& os, const board& brd) {
     }    
 
     return os;
+}
+
+inline std::istream& operator>>(std::istream& is, board& brd) {
+    std::string line;
+    for (int i = 0; i < 9; i++) {
+        std::getline(is, line);        
+        trim(line);        
+        std::vector<std::string> cells = split_string(line, " "); 
+        if (cells.size() == 9) {
+            for (int j = 0; j < 9; j++) {
+                if (cells[j] == "0" || cells[j] == ".") continue;
+                brd.put_num({i, j}, std::stoi(cells[j]));
+            }
+        } else {
+            is.setstate(std::ios::failbit);
+        }
+    }
+    return is;
 }
 
 

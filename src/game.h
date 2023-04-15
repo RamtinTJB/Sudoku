@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <thread>
 #include <chrono>
+#include <string>
 
 #include "view_sfml.h"
 #include "solver.h"
@@ -34,6 +35,8 @@ class game {
 
     public:
         game(int width, int height);
+
+        void load_from_file(const std::string&);
 
         void loop();
 };
