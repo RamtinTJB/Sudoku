@@ -3,6 +3,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
+#include <opencv2/ml/ml.hpp>
 
 namespace {
     cv::Mat gray_scale_and_blur(cv::Mat& src) {
@@ -56,19 +57,59 @@ namespace {
 
         for (int row = 0; row < 9; ++row) {
             for (int col = 0; col < 9; ++col) {
-                cv::Rect cell_rect(col*cell_width, row*cell_height, cell_width, cell_height);
+                cv::Rect cell_rect(col*cell_width+5, row*cell_height+5, cell_width-10, cell_height-10);
                 cells.push_back(src(cell_rect));
             }
         } 
         return cells;
     }
 
-    int ocr_sudoku_cell(cv::Mat& cell) {
+    std::vector<int> ocr_sudoku_cells(std::vector<cv::Mat>& cells) {
+        std::vector<int> numbers;
 
+        cv::Mat sample;
+        cv::Mat response, tmp;
+        cv::FileStorage Data("TrainingData.yml", cv::FileStorage::READ);
+        Data["data"] >> sample;
+        Data.release();
+
+        cv::FileStorage Label("LabelData.yml", cv::FileStorage::READ);
+        Label["label"] >> response;
+        Label.release();
+
+        auto knn = cv::ml::KNearest::create();
+        knn->train(sample, cv::ml::ROW_SAMPLE, response);
+
+        for (auto& cell: cells) {
+            std::vector<std::vector<cv::Point>> contours;
+            std::vector<cv::Vec4i> hierarchy;
+            cv::Mat thr, gray, empty;
+            cv::cvtColor(cell, gray, cv::COLOR_BGR2GRAY);
+            cv::threshold(gray, thr, 200, 255, cv::THRESH_BINARY_INV);
+
+            if (cv::countNonZero(thr) < 1) {
+                std::cout << "0 ";
+                numbers.push_back(0);
+                continue;
+            }
+
+            cv::findContours(thr, contours, hierarchy, cv::RETR_CCOMP, cv::CHAIN_APPROX_SIMPLE);
+            auto index = get_max_area_contour_id(contours);
+            cv::Rect r = cv::boundingRect(contours[index]);
+            cv::Mat ROI = thr(r); 
+            cv::Mat tmp1, tmp2;
+            cv::resize(ROI, tmp1, cv::Size(10, 10), 0, 0, cv::INTER_LINEAR);
+            tmp1.convertTo(tmp2, CV_32FC1);
+            float p = knn->findNearest(tmp2.reshape(1, 1), 1, empty);
+            std::cout << (int)p << " ";  
+            numbers.push_back((int)p);
+        }
+
+        return numbers;
     }
 }
 
-void get_board_from_image(const std::string& image_path) {
+void get_board_from_image(const std::string& image_path, board& b) {
     cv::Mat src = cv::imread(image_path);
     if (src.empty()) {
         std::cout << "Could not open or find the image!" << std::endl;
@@ -77,13 +118,8 @@ void get_board_from_image(const std::string& image_path) {
     cv::Mat gray_scale = gray_scale_and_blur(src);
     auto contours = find_contours(gray_scale);
     auto largest_index = get_max_area_contour_id(contours);
-    auto board = warp_sudoku_board_to_fill_screen(src, contours[largest_index]);
-    auto cells = make_9_by_9_grid(board);
-
-    const char* source_window = "Source";
-    imshow(source_window, board);
-    for (int i = 0; i < 9; i++) {
-        std::string window_title = "Cell " + std::to_string(i);
-        imshow(window_title.c_str(), cells[i]);
-    }
+    auto brd = warp_sudoku_board_to_fill_screen(src, contours[largest_index]);
+    auto cells = make_9_by_9_grid(brd);
+    auto numbers = ocr_sudoku_cells(cells);
+    b.fill(numbers);
 }

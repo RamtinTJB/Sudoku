@@ -37,6 +37,7 @@ class game {
         game(int width, int height);
 
         void load_from_file(const std::string&);
+        void load_from_image(const std::string&);
 
         void loop();
 };

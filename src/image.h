@@ -5,6 +5,6 @@
 
 #include "board.h"
 
-void get_board_from_image(const std::string& image_path);
+void get_board_from_image(const std::string& image_path, board&);
 
 #endif

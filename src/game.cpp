@@ -1,6 +1,7 @@
 #include <fstream>
 
 #include "game.h"
+#include "image.h"
 
 game::game(int width, int height) {
     width_  = width;
@@ -21,6 +22,10 @@ void game::load_from_file(const std::string& file_path) {
         file >> brd_;
     }
     file.close();
+}
+
+void game::load_from_image(const std::string& image_path) {
+    get_board_from_image(image_path, brd_);
 }
 
 void game::increment_selected_cell(int count) {
