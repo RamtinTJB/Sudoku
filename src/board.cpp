@@ -1,19 +1,20 @@
 #include "board.h"
 
+#include <algorithm>
+
+void board::init_cell_styles() {
+    styles_ = new CellStyle[81];
+    for (int i = 0; i < 81; ++i) {
+        styles_[i] = CellStyle::REGULAR;
+    }
+}
+
 board::board() {
-	/* grid_ = new int[81] {0, 8, 0, 5, 3, 0, 2, 7, 6, */
-	/* 					 0, 5, 0, 6, 0, 0, 0, 0, 0, */
-	/* 					 6, 1, 3, 0, 0, 0, 0, 0, 0, */
-	/* 					 0, 0, 6, 0, 5, 0, 0, 0, 0, */
-	/* 					 0, 3, 2, 0, 0, 0, 7, 0, 1, */
-	/* 					 7, 4, 5, 0, 0, 8, 6, 9, 3, */
-	/* 					 0, 7, 0, 9, 6, 0, 5, 0, 0, */ 
-                         /* 4, 0, 0, 1, 8, 0, 0, 6, 7, */
-	/* 					 5, 0, 0, 0, 0, 4, 8, 2, 9}; */	
-	styles_ = new CellStyle[81];	
-	for (int i = 0; i < 81; ++i) {
-		styles_[i] = CellStyle::REGULAR;
-	}
+    init_cell_styles();
+}
+
+void board::fill(const std::vector<int>& number) {
+    std::copy(number.begin(), number.end(), grid_);
 }
 
 bool board::is_valid() {
@@ -120,4 +121,9 @@ void board::print_board() {
 		if (i % 9 ==0) std::cout << std::endl;
 		std::cout << grid_[i] << " ";
 	}
+}
+
+board::~board() {
+    delete[] grid_;
+    delete[] styles_;
 }

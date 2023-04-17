@@ -29,6 +29,8 @@ class board {
 		std::vector<int> get_row(int row_num) const;
 		std::vector<int> get_col(int col_num) const;
 		std::vector<int> get_box(int box_num) const;
+
+        void init_cell_styles();
 	public:
         using const_iterator = int const*;
 
@@ -47,8 +49,11 @@ class board {
 
 		CellStyle get_style(const cell& c) const;
 		void set_style(const cell&, const CellStyle&);
+        void fill(const std::vector<int>&);
 
 		void print_board();
+
+        ~board();
 };
 
 inline std::ostream& operator<<(std::ostream& os, const board& brd) {
