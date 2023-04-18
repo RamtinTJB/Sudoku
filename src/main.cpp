@@ -17,8 +17,10 @@ int main(int argc, const char** argv) {
     }
 
     game g(1000, 1000);
-    if (!opt.empty_board) {
+    if (opt.from_file) {
         g.load_from_file(opt.file_path);
+    } else if (opt.from_image) {
+        g.load_from_image(opt.file_path);
     }
     g.loop();
 
