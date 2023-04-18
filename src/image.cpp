@@ -5,6 +5,8 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/ml/ml.hpp>
 
+#define SUDOKU_OPENCV_DEBUG_ON
+
 namespace {
     cv::Mat gray_scale_and_blur(cv::Mat& src) {
         cv::Mat output;
@@ -14,8 +16,15 @@ namespace {
     }
 
     std::vector<std::vector<cv::Point>> find_contours(cv::Mat& src) {
-        cv::Mat canny_output;
-        cv::Canny(src, canny_output, 255/3, 255);
+        cv::Mat canny_output, tmp;
+        auto high_thresh = cv::threshold(src, tmp, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+        auto low_thresh = 0.5*high_thresh;
+        cv::Canny(src, canny_output, low_thresh, high_thresh);
+
+#ifdef SUDOKU_OPENCV_DEBUG_ON
+        cv::imshow("Debug", canny_output);
+        cv::waitKey(0);
+#endif
 
         std::vector<std::vector<cv::Point>> contours;
         std::vector<cv::Vec4i> hierarchy;
@@ -27,8 +36,12 @@ namespace {
     int get_max_area_contour_id(std::vector<std::vector<cv::Point>> contours) {
         double maxArea = 0;
         int contour_id = -1;
+        std::vector<cv::Point2f> bounding_rect;
         for (int j = 0; j < contours.size(); ++j) {
-            double newArea = cv::contourArea(contours[j]);
+            auto perimeter = cv::arcLength(contours[j], true);
+            cv::approxPolyDP(contours[j], bounding_rect, 0.015*perimeter, true);
+            /* double newArea = cv::contourArea(contours[j]); */
+            double newArea = cv::contourArea(bounding_rect);
             if (newArea > maxArea) {
                 maxArea = newArea;
                 contour_id = j;
@@ -111,15 +124,44 @@ namespace {
 
 void get_board_from_image(const std::string& image_path, board& b) {
     cv::Mat src = cv::imread(image_path);
+
+#ifdef SUDOKU_OPENCV_DEBUG_ON
+    cv::imshow("Debug", src);
+    cv::waitKey(0);
+#endif
+
     if (src.empty()) {
         std::cout << "Could not open or find the image!" << std::endl;
         return;
     }
     cv::Mat gray_scale = gray_scale_and_blur(src);
+#ifdef SUDOKU_OPENCV_DEBUG_ON
+    cv::imshow("Debug", gray_scale);
+    cv::waitKey(0);
+#endif
     auto contours = find_contours(gray_scale);
     auto largest_index = get_max_area_contour_id(contours);
     auto brd = warp_sudoku_board_to_fill_screen(src, contours[largest_index]);
+
+#ifdef SUDOKU_OPENCV_DEBUG_ON
+    cv::Mat contour_src;
+    src.copyTo(contour_src);
+    cv::drawContours(contour_src, contours, -1, cv::Scalar(0,0,255), 8, 8);
+    cv::imshow("Debug", contour_src);
+    cv::waitKey(0);
+
+    src.copyTo(contour_src);
+    cv::drawContours(contour_src, contours, largest_index, cv::Scalar(0,0,255), 8, 8);
+    cv::imshow("Debug", contour_src);
+    cv::waitKey(0);
+
+    cv::imshow("Debug", brd);
+    cv::waitKey(0);
+#endif
+
+#ifndef SUDOKU_OPENCV_DEBUG_ON
     auto cells = make_9_by_9_grid(brd);
     auto numbers = ocr_sudoku_cells(cells);
     b.fill(numbers);
+#endif
 }
