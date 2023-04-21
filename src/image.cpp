@@ -82,11 +82,11 @@ namespace {
 
         cv::Mat sample;
         cv::Mat response, tmp;
-        cv::FileStorage Data("TrainingData.yml", cv::FileStorage::READ);
+        cv::FileStorage Data("digit_recognition_training/TrainingData.yml", cv::FileStorage::READ);
         Data["data"] >> sample;
         Data.release();
 
-        cv::FileStorage Label("LabelData.yml", cv::FileStorage::READ);
+        cv::FileStorage Label("digit_recognition_training/LabelData.yml", cv::FileStorage::READ);
         Label["label"] >> response;
         Label.release();
 
