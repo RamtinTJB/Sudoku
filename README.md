@@ -51,7 +51,7 @@ cd Sudoku
 cmake -B build
 cd build
 make
-cd build
+cd src
 ./Sudoku
 ```
 
